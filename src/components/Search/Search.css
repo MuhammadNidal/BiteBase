@@ -9,6 +9,7 @@
 .search_logo{
     display: flex;
     margin-top: 1rem;
+    
 }
 .search_logo>img{
     width: 15rem;

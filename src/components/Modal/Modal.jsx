@@ -1,7 +1,7 @@
-// src/components/Modal.js
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice'; // Correct import of addToCart
+import { addToCart } from '../../redux/cartSlice';
+ // Correct import of addToCart
 import { useNavigate } from 'react-router-dom';
 import './Modal.css';
 
@@ -57,9 +57,9 @@ const Modal = ({ dish, closeModal }) => {
       addons: selectedAddons,
       totalPrice: calculateTotalPrice(),
     };
-    dispatch(addToCart(cartItem)); // Correct usage of addToCart
+    dispatch(addToCart(cartItem));
     closeModal();
-    navigate('/cart');
+    // navigate('/cart'); // Ensure this route is correctly set up in your router configuration
   };
 
   return (

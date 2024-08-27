@@ -1,40 +1,42 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-// import ImageSlider from '../Details/ImageSlider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStore } from '@fortawesome/free-solid-svg-icons';
 import DishCard from '../DishCart/DishCard';
 import './HotelDetail.css';
-// import Button from '@mui/material/Button';
+import { useSelector } from 'react-redux';
 
 // Import images at the top
 import Fish1 from '../../images/dishes/fish1.jpg';
 import Fish3 from '../../images/dishes/fish3.png';
 import Chicken1 from '../../images/dishes/chicken1.jpeg';
 import Chicken2 from '../../images/dishes/chicken2.jpeg';
-import Kebab1 from '../../images/dishes/springRolls.jpeg'; // Corrected import
-import Kebab2 from '../../images/dishes/kebabroll.jpeg'; // Corrected import
-import Rice1 from '../../images/dishes/Pulao.jpg'; // Corrected import
-import Rice2 from '../../images/dishes/friedrice.jpg'; // Corrected import
-import BeefSteak from '../../images/dishes/meet1.jpg'; // Corrected import
-import LambChops from '../../images/dishes/meet2.jpeg'; // Corrected import
-import Bruschetta1 from '../../images/dishes/Bruscheta.jpeg'; // Corrected import
-import Mushroom2 from '../../images/dishes/mashroom.jpeg'; // Corrected import
-import SpringRolls3 from '../../images/dishes/springRolls.jpeg'; // Corrected import
-import ChickenSatay4 from '../../images/dishes/chikensatay.jpeg'; 
-import Fish4 from '../../images/dishes/baked.jpeg'; // Corrected import
-import Fish5 from '../../images/dishes/tacos.jpeg'; // Corrected import
-import Chicken3 from '../../images/dishes/saladRost.jpeg'; // Corrected import
-import Chicken4 from '../../images/dishes/airfish.jpg'; // Corrected import
-import  Kebab3 from '../../images/dishes/shwarma.jpeg'; // Corrected import
-import Kebab4 from '../../images/dishes/seekhKebabs.jpg'; // Corrected import
-import Rice3 from '../../images/dishes/saffron.jpeg'; // Corrected import
+import Kebab1 from '../../images/dishes/springRolls.jpeg';
+import Kebab2 from '../../images/dishes/kebabroll.jpeg';
+import Rice1 from '../../images/dishes/Pulao.jpg';
+import Rice2 from '../../images/dishes/friedrice.jpg';
+import BeefSteak from '../../images/dishes/meet1.jpg';
+import LambChops from '../../images/dishes/meet2.jpeg';
+import Bruschetta1 from '../../images/dishes/Bruscheta.jpeg';
+import Mushroom2 from '../../images/dishes/mashroom.jpeg';
+import SpringRolls3 from '../../images/dishes/springRolls.jpeg';
+import ChickenSatay4 from '../../images/dishes/chikensatay.jpeg';
+import Fish4 from '../../images/dishes/baked.jpeg';
+import Fish5 from '../../images/dishes/tacos.jpeg';
+import Chicken3 from '../../images/dishes/saladRost.jpeg';
+import Chicken4 from '../../images/dishes/airfish.jpg';
+import Kebab3 from '../../images/dishes/shwarma.jpeg';
+import Kebab4 from '../../images/dishes/seekhKebabs.jpg';
+import Rice3 from '../../images/dishes/saffron.jpeg';
 import Rice4 from '../../images/dishes/lemonrice.jpeg';
-import BeefSteak1 from '../../images/dishes/pork.jpg'; // Corrected import
+import BeefSteak1 from '../../images/dishes/pork.jpg';
 import LambChops1 from '../../images/dishes/meet1.jpg';
 
 const HotelDetail = ({ hotels }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const hotel = hotels.find(hotel => hotel.id === parseInt(id));
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
   if (!hotel) {
     navigate('/404'); // Handle non-existent hotel
@@ -81,24 +83,37 @@ const HotelDetail = ({ hotels }) => {
       { id: 24, name: 'Chicken Satay', image: ChickenSatay4, description: 'Grilled chicken skewers served with a rich peanut sauce.', price: 300 },
     ]
   };
-  
+
+  const handleIconClick = () => {
+    navigate('/cart');
+  };
 
   return (
     <div className="hotel-detail">
+      {/* Icon on the left side */}
+      <div className="icon-container" onClick={handleIconClick}>
+        <FontAwesomeIcon 
+          icon={faStore} 
+          className="responsive-icon"
+        />
+        {totalQuantity > 0 && (
+          <span className="cart-badge">{totalQuantity}</span>
+        )}
+      </div>
+      
       <h1 style={{ color: 'green', textAlign: 'center', fontSize: '2.5rem', marginBottom: '10px' }}>
         {hotel.name}
       </h1>
       <p style={{ color: 'green', textAlign: 'center', fontSize: '1.2rem', marginTop: '0' }}>
         {hotel.description}
       </p>
-      {/* <ImageSlider images={hotel.images} /> */}
       <div className="category-buttons">
-        <button  onClick={() => setSelectedCategory('fish')}>Fish</button>
-        <button variant="contained" onClick={() => setSelectedCategory('chicken')}>Chicken</button>
-        <button variant="contained" onClick={() => setSelectedCategory('kebabs')}>Kebabs</button>
-        <button variant="contained" onClick={() => setSelectedCategory('rice')}>Rice</button>
-        <button variant="contained" onClick={() => setSelectedCategory('meat')}>Meat</button>
-        <button variant="contained" onClick={() => setSelectedCategory('starters')}>Starters</button>
+        <button onClick={() => setSelectedCategory('fish')}>Fish</button>
+        <button onClick={() => setSelectedCategory('chicken')}>Chicken</button>
+        <button onClick={() => setSelectedCategory('kebabs')}>Kebabs</button>
+        <button onClick={() => setSelectedCategory('rice')}>Rice</button>
+        <button onClick={() => setSelectedCategory('meat')}>Meat</button>
+        <button onClick={() => setSelectedCategory('starters')}>Starters</button>
       </div>
       <div className="dishes">
         {dishes[selectedCategory] && dishes[selectedCategory].map(dish => (
