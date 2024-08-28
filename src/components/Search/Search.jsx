@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { TextField, Menu, MenuItem, ListItemIcon, ListItemText,  } from '@mui/material';
+import { useState } from 'react';
+import { TextField, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 import data from '../../Data'; // Your data file
 import bitebase from '../../images/BiteBaselogo.png';
@@ -9,18 +9,17 @@ import { useNavigate } from 'react-router-dom';
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(null);
-const navigate=useNavigate()
-  // Flatten the data to include all categories
-  // const allCategories = useMemo(() => 
-  //   data.flatMap(restaurant =>
-  //     restaurant.riceDishes.map(dish => ({
-  //       ...dish,
-  //       restaurantName: restaurant.restaurantName,
-  //       category: restaurant.category || 'Unknown' // Add a default category if needed
-  //     }))
-  //   ), [data]
-  // );
+  const navigate = useNavigate();
+
+  // Combine and prepare all menu items from the data
+  const allCategories = data.reduce((acc, restaurant) => {
+    const menuItemsWithRestaurant = restaurant.menuItems.map(dish => ({
+      ...dish,
+      restaurantName: restaurant.name,
+      category: dish.category || 'Unknown', // Add a default category if needed
+    }));
+    return acc.concat(menuItemsWithRestaurant);
+  }, []);
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -28,7 +27,6 @@ const navigate=useNavigate()
 
     if (value.trim() === '') {
       setSuggestions([]);
-      setAnchorEl(null);
       return;
     }
 
@@ -39,22 +37,13 @@ const navigate=useNavigate()
     );
 
     setSuggestions(filteredSuggestions);
-
-    // Only set anchorEl if there are suggestions to display
-    if (filteredSuggestions.length > 0) {
-      setAnchorEl(event.currentTarget);
-    } else {
-      setAnchorEl(null);
-    }
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const handleDishClick = (id) => {
     navigate(`/dish/${id}`);
-    handleClose(); // Close the menu on click
+    setSuggestions([]); // Clear suggestions on click
   };
+  
 
   return (
     <div className="search_container">
@@ -86,43 +75,22 @@ const navigate=useNavigate()
             },
           }}
         />
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl) && suggestions.length > 0}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          PaperProps={{
-            style: {
-              maxHeight: '400px',
-              width: '100%',
-              overflow: 'auto',
-              transform: 'translateY(0)', 
-            },
-          }}
-        >
-          {suggestions.length > 0 ? (
-            suggestions.map(dish => (
+        {/* Conditionally render suggestions directly below the input field */}
+        {suggestions.length > 0 && (
+          <div className="suggestions_list" style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: 'white', zIndex: 1, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+            {suggestions.map(dish => (
               <MenuItem key={dish.id} onClick={() => handleDishClick(dish.id)} style={{ gap: '1rem' }}>
                 <ListItemIcon>
                   <img src={dish.image} alt={dish.name} style={{ width: '50px', height: '50px', borderRadius: '5px' }} />
                 </ListItemIcon>
                 <ListItemText 
-                  primary={`${dish.name} (${dish.restaurantName})`}
-                  // secondary={<Typography variant="body2" color="textSecondary">{dish.category}</Typography>}
-                />
+  primary={`${dish.name} (${dish.restaurantName})`} 
+/>
+
               </MenuItem>
-            ))
-          ) : (
-            <MenuItem disabled>No suggestions</MenuItem>
-          )}
-        </Menu>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
