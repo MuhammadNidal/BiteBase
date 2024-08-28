@@ -32,7 +32,7 @@ const FoodService = () => {
 
       <div className="search">
         <SearchInput/>
-      </div>
+      
 
       <h2 style={{color:"black"}}>Resturants Board</h2>
       <div className="hotel-cards">
@@ -40,6 +40,7 @@ const FoodService = () => {
           <HotelCard key={hotel.id} hotel={hotel} />
         ))}
       </div>
+    </div>
     </div>
   );
 };

@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStore } from '@fortawesome/free-solid-svg-icons';
 import DishCard from '../DishCart/DishCard';
 import './HotelDetail.css';
+
+
 import { useSelector } from 'react-redux';
 
 // Import images at the top
@@ -99,7 +101,8 @@ const HotelDetail = ({ hotels }) => {
         {totalQuantity > 0 && (
           <span className="cart-badge">{totalQuantity}</span>
         )}
-      </div>
+        </div>
+
       
       <h1 style={{ color: 'green', textAlign: 'center', fontSize: '2.5rem', marginBottom: '10px' }}>
         {hotel.name}

@@ -33,6 +33,7 @@
   
   .responsive-icon {
     color: green;
+    margin-top: 20px;
     margin-left: 1150px;
     font-size: 3rem; /* Adjust the size as needed */
   }

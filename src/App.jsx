@@ -5,10 +5,9 @@ import FooterKhan from './components/FoodServices/Footer';
 import HotelCard from './components/HotelsCard/HotelCard';
 import HotelDetail from './components/HotelDetail/HotelDetail';
 import FoodService from './components/FoodServices/FoodServices';
-
-
-import Modal from '././components/Modal/Modal';
+import Modal from './components/Modal/Modal';
 import Cart from './components/AddToCart/Cart';
+import Checkout from './components/Checkout/Checkout'; // Ensure correct import
 
 // Import images
 import Sheriz from './images/dishes/chicken1.jpeg';
@@ -58,22 +57,21 @@ const App = () => {
 
   return (
     <Router>
-      {/* <CustomNavbar cartCount={cartItems.length} /> */}
       <main>
         <Routes>
           <Route path="/" element={<FoodService />} />
           <Route path="/food/Services/:id" element={<HotelDetail hotels={hotels} />} />
-
-            <Route path="/hotel-card" element={<HotelCard hotel={hotels[0]} onCardClick={openModal} />} />
+          <Route path="/hotel-card" element={<HotelCard hotel={hotels[0]} onCardClick={openModal} />} />
           <Route
-            path="/cart" // Use lowercase for consistency
+            path="/cart"
             element={
               <Cart cartItems={cartItems} onClearCart={clearCart} onCheckout={handleCheckout} />
             }
           />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </main>
-      <FooterKhan /> {/* Footer should be outside of Routes */}
+      <FooterKhan />
       {modalOpen && selectedDish && (
         <Modal dish={selectedDish} closeModal={closeModal} onAddToCart={addToCart} />
       )}

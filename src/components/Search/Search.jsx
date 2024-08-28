@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { TextField, Menu, MenuItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { TextField, Menu, MenuItem, ListItemIcon, ListItemText,  } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 import data from '../../Data'; // Your data file
 import bitebase from '../../images/BiteBaselogo.png';
@@ -10,18 +10,17 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const navigate = useNavigate();
-
+const navigate=useNavigate()
   // Flatten the data to include all categories
-  const allCategories = useMemo(() => 
-    data.flatMap(restaurant =>
-      restaurant.riceDishes.map(dish => ({
-        ...dish,
-        restaurantName: restaurant.restaurantName,
-        category: restaurant.category || 'Unknown' // Add a default category if needed
-      }))
-    ), [data]
-  );
+  // const allCategories = useMemo(() => 
+  //   data.flatMap(restaurant =>
+  //     restaurant.riceDishes.map(dish => ({
+  //       ...dish,
+  //       restaurantName: restaurant.restaurantName,
+  //       category: restaurant.category || 'Unknown' // Add a default category if needed
+  //     }))
+  //   ), [data]
+  // );
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -52,9 +51,8 @@ const Search = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const handleDishClick = (id) => {
-    navigate(`/dish/${id}`); // Fixed template literal
+    navigate(`/dish/${id}`);
     handleClose(); // Close the menu on click
   };
 
@@ -116,8 +114,8 @@ const Search = () => {
                   <img src={dish.image} alt={dish.name} style={{ width: '50px', height: '50px', borderRadius: '5px' }} />
                 </ListItemIcon>
                 <ListItemText 
-                  primary={`${dish.name} (${dish.restaurantName})`} // Fixed template literal
-                  secondary={<Typography variant="body2" color="textSecondary">{dish.category}</Typography>} // Uncommented and fixed
+                  primary={`${dish.name} (${dish.restaurantName})`}
+                  // secondary={<Typography variant="body2" color="textSecondary">{dish.category}</Typography>}
                 />
               </MenuItem>
             ))
